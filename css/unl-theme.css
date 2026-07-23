@@ -172,17 +172,15 @@
 /* ══════════════════════════════════════════════════════════════
    SLIDE DE PORTADA
    ══════════════════════════════════════════════════════════════ */
+/* Portada con layout dividido: panel rojo (logo) + panel blanco (info). */
 .portada {
-  background: linear-gradient(135deg, var(--unl-rojo) 0%, var(--unl-rojo-oscuro) 60%, #8B0000 100%) !important;
-  color: var(--unl-blanco) !important;
-  text-align: center !important;
+  background: var(--unl-blanco) !important;
   display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-start !important;
-  /* contenido anclado arriba, no centrado */
-  align-items: center !important;
-  padding: 50px 40px 40px 40px !important;
-  /* ajusta el padding superior para subir/bajar todo */
+  flex-direction: row !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  height: 100% !important;
+  overflow: hidden !important;
 }
 
 .portada::before,
@@ -190,63 +188,107 @@
   display: none !important;
 }
 
-/* Ocultar el h2 vacío que Quarto genera para "## {.portada}"
-   (sin esto aparece como una franja roja suelta). El título real
-   de la portada está dentro de un <div>, así que no se ve afectado. */
+/* Ocultar el h2 vacío que Quarto genera para "## {.portada}" */
 .reveal .slides section.portada>h2,
 .reveal .slides section.portada-final>h2,
 .seccion h2:empty {
   display: none !important;
 }
 
-.portada h2 {
-  color: var(--unl-blanco) !important;
-  background: transparent !important;
-  padding: 0 !important;
-  margin-left: 0 !important;
-  margin-top: 0.3em !important;
-  font-size: 1.5em !important;
-  font-weight: 800 !important;
-  border-bottom: none !important;
-  margin-bottom: 0.2em !important;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  line-height: 1.3 !important;
+/* ── Panel rojo izquierdo con el logo centrado ─────────────── */
+.portada .portada-panel-rojo {
+  flex: 0 0 40%;
+  background: linear-gradient(160deg, var(--unl-rojo) 0%, var(--unl-rojo-oscuro) 70%, #8B0000 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 40px;
 }
 
 .portada .logo-portada {
-  width: 250px;
-  margin-bottom: 20px;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.3));
+  width: 100%;
+  max-width: 360px;
+  margin-left: 80px;
+  /* desplaza a la derecha para centrar ópticamente el sello */
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.25));
 }
 
-.portada .subtitulo {
+/* Logo de la Carrera (blanco), debajo del logo UNL */
+.portada .logo-cis {
+  width: 78%;
+  max-width: 300px;
+  margin-top: 60px;
+  margin-left: 90px;
+  filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.2));
+}
+
+/* ── Panel blanco derecho con la información ────────────────── */
+.portada .portada-panel-blanco {
+  flex: 1 1 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 70px;
+  text-align: left;
+}
+
+.portada .cover-institucion {
   font-family: var(--unl-font-titulos);
   font-size: 0.6em;
-  line-height: 1.6;
-  font-weight: 300;
-  opacity: 0.95;
-  margin-bottom: 8px;
-  letter-spacing: 0.05em;
+  font-weight: 700;
+  color: var(--unl-rojo);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  margin: 0 0 6px 0;
 }
 
-.portada .info-tesis {
-  font-size: 0.55em;
-  opacity: 0.9;
-  line-height: 1.8;
-  margin-top: 15px;
+.portada .cover-facultad {
+  font-family: var(--unl-font-cuerpo);
+  font-size: 0.5em;
+  font-weight: 400;
+  color: var(--unl-gris);
+  line-height: 1.5;
+  margin: 0 0 22px 0;
 }
 
-.portada .info-tesis strong {
-  font-weight: 600;
+.portada h2.cover-titulo {
+  display: block !important;
+  color: var(--unl-negro) !important;
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 0 20px 0 !important;
+  width: auto !important;
+  font-family: var(--unl-font-titulos);
+  font-size: 1.35em !important;
+  font-weight: 800 !important;
+  line-height: 1.2 !important;
+  letter-spacing: -0.01em;
+  text-shadow: none !important;
 }
 
-.portada .linea-decorativa {
-  width: 80px;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.6);
-  margin: 15px auto;
+.portada .cover-linea {
+  width: 70px;
+  height: 4px;
+  background: var(--unl-rojo);
   border-radius: 2px;
+  margin: 0 0 26px 0;
+}
+
+.portada .cover-info {
+  font-size: 0.6em;
+  color: var(--unl-gris-oscuro);
+  line-height: 2.1;
+}
+
+.portada .cover-label {
+  display: inline-block;
+  min-width: 130px;
+  font-family: var(--unl-font-titulos);
+  font-weight: 700;
+  color: var(--unl-rojo);
 }
 
 /* ══════════════════════════════════════════════════════════════

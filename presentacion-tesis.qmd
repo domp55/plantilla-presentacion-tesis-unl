@@ -51,23 +51,27 @@ format:
      SLIDE 1: PORTADA PRINCIPAL
      ═══════════════════════════════════════════════════════════ -->
 
-## {.portada data-state="portada" data-menu-title="Portada" data-background-color="#E30613" data-background-gradient="linear-gradient(135deg, #E30613 0%, #B8050F 60%, #8B0000 100%)"}
+## {.portada data-state="portada" data-menu-title="Portada" data-background-color="#FFFFFF"}
 
-<div style="text-align:center;">
+::: {.portada-panel-rojo}
 <img src="assets/logoUNL.png" class="logo-portada" alt="Logo UNL">
+<img src="assets/logoCIS-05.png" class="logo-cis" alt="Logo Carrera de Ingeniería en Sistemas / Computación">
+:::
 
-<p class="subtitulo">Facultad de la Energía, Las Industrias y los Recursos Naturales No Renovables<br>Carrera de Computación</p>
+::: {.portada-panel-blanco}
+<p class="cover-institucion">Universidad Nacional de Loja</p>
+<p class="cover-facultad">Facultad de la Energía, Las Industrias y los Recursos Naturales No Renovables · Carrera de Computación</p>
 
-<h2>«Título de tu Trabajo de Tesis aquí»</h2>
+<h2 class="cover-titulo">«Título de tu Trabajo de Tesis aquí»</h2>
 
-<div class="linea-decorativa"></div>
+<div class="cover-linea"></div>
 
-<div class="info-tesis">
-<strong>Autor:</strong> «Nombre del Estudiante»<br>
-<strong>Director:</strong> «Nombre del Director de Tesis»<br><br>
-<strong>Loja – Ecuador</strong> | «Año»
+<div class="cover-info">
+<div class="cover-row"><span class="cover-label">Autor</span> «Nombre del Estudiante»</div>
+<div class="cover-row"><span class="cover-label">Director</span> «Nombre del Director de Tesis»</div>
+<div class="cover-row"><span class="cover-label">Loja – Ecuador</span> «Año»</div>
 </div>
-</div>
+:::
 
 
 <!-- ═══════════════════════════════════════════════════════════
