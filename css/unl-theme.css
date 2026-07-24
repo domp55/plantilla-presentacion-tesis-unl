@@ -295,8 +295,8 @@
    SLIDES DE SECCIÓN (Transición)
    ══════════════════════════════════════════════════════════════ */
 .seccion {
-  background: linear-gradient(135deg, var(--unl-rojo) 0%, var(--unl-rojo-oscuro) 100%) !important;
-  color: var(--unl-blanco) !important;
+  background: var(--unl-blanco) !important;
+  color: var(--unl-rojo) !important;
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
@@ -309,13 +309,19 @@
 }
 
 .seccion h2 {
-  color: var(--unl-blanco) !important;
+  color: var(--unl-rojo) !important;
+  background: transparent !important;
   font-size: 2.2em !important;
   font-weight: 800 !important;
   border-bottom: none !important;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  text-shadow: none !important;
   position: relative;
-  padding-left: 25px;
+  /* anula la banda roja por defecto del h2 */
+  margin-left: 0 !important;
+  margin-top: 0 !important;
+  padding: 0 0 0 25px !important;
+  width: auto !important;
+  max-width: 88% !important;
 }
 
 .seccion h2::before {
@@ -325,7 +331,7 @@
   top: 0;
   width: 6px;
   height: 100%;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--unl-rojo);
   border-radius: 3px;
 }
 
@@ -333,7 +339,8 @@
   font-family: var(--unl-font-titulos);
   font-size: 4em;
   font-weight: 800;
-  opacity: 0.15;
+  color: var(--unl-rojo);
+  opacity: 0.12;
   position: absolute;
   right: 60px;
   bottom: 40px;

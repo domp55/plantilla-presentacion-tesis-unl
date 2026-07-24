@@ -1,14 +1,10 @@
 ---
 # ══════════════════════════════════════════════════════════════
-# PLANTILLA DE PRESENTACIÓN DE TESIS
-# Universidad Nacional de Loja
-# Facultad de la Energía, Las Industrias y los Recursos Naturales No Renovables
-# Carrera de Computación
-#
-# INSTRUCCIONES:
-#   1. Reemplaza los textos entre «» con tu información
-#   2. Renderiza con: quarto preview presentacion-tesis.qmd
-#   3. Para exportar PDF: usa la opción de imprimir del navegador (Ctrl+P)
+# PRESENTACIÓN DE TESIS
+# Evaluación del rendimiento de un clúster de bajo costo
+# basado en Raspberry Pi orquestado con Kubernetes
+# Autor: Diego Oswaldo Márquez Paccha — UNL
+# Renderizar: quarto preview presentacion-tesis.qmd
 # ══════════════════════════════════════════════════════════════
 format:
   revealjs:
@@ -45,278 +41,812 @@ format:
           }
         });
         </script>
+        <style>
+        /* ── Diagrama de problemática (cajas alrededor de la pregunta) ── */
+        .diagrama-problema {
+          display: grid;
+          grid-template-columns: 1fr 1.35fr 1fr;
+          grid-template-rows: 1fr 1fr;
+          gap: 18px;
+          height: 500px;
+          max-width: 1180px;
+          margin: 0.3em auto 0;
+          align-items: stretch;
+          justify-items: stretch;
+        }
+        .dp-caja {
+          background: var(--unl-gris-claro);
+          border: 1px solid var(--unl-gris-linea);
+          border-top: 4px solid var(--unl-azul-oscuro);
+          border-radius: 10px;
+          padding: 16px 20px;
+          font-size: 0.62em;
+          line-height: 1.45;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        .dp-caja .dp-titulo {
+          font-family: var(--unl-font-titulos);
+          font-weight: 700;
+          color: var(--unl-rojo);
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          font-size: 0.85em;
+          margin-bottom: 4px;
+        }
+        .dp-centro {
+          grid-column: 2;
+          grid-row: 1 / 3;
+          align-self: stretch;
+          background: linear-gradient(135deg, var(--unl-rojo) 0%, var(--unl-rojo-oscuro) 100%);
+          color: var(--unl-blanco);
+          border: none;
+          border-radius: 14px;
+          padding: 24px 26px;
+          font-size: 0.72em;
+          line-height: 1.5;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          text-align: center;
+          box-shadow: 0 8px 22px rgba(227, 6, 19, 0.35);
+        }
+        .dp-centro .dp-titulo-centro {
+          font-family: var(--unl-font-titulos);
+          font-weight: 800;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          font-size: 0.8em;
+          margin-bottom: 10px;
+          opacity: 0.9;
+        }
+        .dp-centro strong { color: #FFD9DC; }
+        /* ── Tarjetas de conceptos clave ── */
+        .concept-grid {
+          display: grid;
+          grid-template-columns: repeat(2, 1fr);
+          gap: 18px;
+          margin-top: 0.4em;
+        }
+        .concept-card {
+          background: var(--unl-gris-claro);
+          border-left: 4px solid var(--unl-rojo);
+          border-radius: 0 10px 10px 0;
+          padding: 16px 20px;
+          font-size: 0.66em;
+          line-height: 1.45;
+        }
+        .concept-card b { color: var(--unl-rojo); }
+        /* Tarjetas de métrica conclusiva (latencia / throughput) */
+        .metric-grid { display: flex; gap: 22px; margin: 0.4em 0 0.5em; }
+        .metric-card {
+          flex: 1;
+          background: linear-gradient(135deg, var(--unl-rojo) 0%, var(--unl-rojo-oscuro) 100%);
+          color: #fff;
+          border-radius: 14px;
+          padding: 20px 18px;
+          text-align: center;
+          box-shadow: 0 6px 18px rgba(227, 6, 19, 0.3);
+        }
+        .metric-card .m-label {
+          font-family: var(--unl-font-titulos);
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          font-size: 0.62em;
+          font-weight: 800;
+          opacity: 0.92;
+        }
+        .metric-card .m-value {
+          font-family: var(--unl-font-titulos);
+          font-size: 1.75em;
+          font-weight: 800;
+          line-height: 1.1;
+          margin: 6px 0 4px;
+        }
+        .metric-card .m-sub { font-size: 0.5em; opacity: 0.95; line-height: 1.35; }
+        /* Bloque de código QR con enlace */
+        .qr-box {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          margin-top: 18px;
+          padding: 10px 14px;
+          background: var(--unl-gris-claro);
+          border-left: 4px solid var(--unl-rojo);
+          border-radius: 0 10px 10px 0;
+        }
+        .qr-box img {
+          width: 118px !important;
+          height: 118px !important;
+          border-radius: 6px !important;
+          box-shadow: none !important;
+          background: #fff;
+          padding: 5px;
+          flex-shrink: 0;
+        }
+        .qr-box .qr-txt { font-size: 0.5em; line-height: 1.4; }
+        .qr-box .qr-txt b { color: var(--unl-rojo); }
+        .qr-box .qr-txt a { color: var(--unl-azul-oscuro); word-break: break-all; }
+        /* Enlace clicable debajo del código QR */
+        .reveal a.repo-link {
+          display: inline-block;
+          margin-top: 8px;
+          font-size: 0.52em;
+          font-weight: 700;
+          color: var(--unl-rojo);
+          background: var(--unl-gris-claro);
+          border: 1px solid var(--unl-gris-linea);
+          border-radius: 8px;
+          padding: 6px 14px;
+          word-break: break-all;
+        }
+        .reveal a.repo-link:hover { background: var(--unl-rojo); color: #fff; border-color: var(--unl-rojo); }
+        /* Columna compacta: texto más pequeño para que quepa el QR + enlace */
+        .reveal .compacto li { font-size: 0.72em; line-height: 1.3; margin-bottom: 0.35em; }
+        .reveal .compacto .qr-box { margin-top: 10px; padding: 8px 12px; }
+        .reveal .compacto .qr-box img { width: 92px !important; height: 92px !important; }
+        .reveal .compacto .qr-box .qr-txt { font-size: 0.44em; }
+        /* Conceptos en una sola columna (cuando acompañan a una figura) */
+        .concept-col { display: flex; flex-direction: column; gap: 12px; }
+        .concept-col .concept-card { font-size: 0.55em; padding: 11px 16px; }
+        /* Viñeta/numeral en la misma línea que el texto */
+        .reveal .slides li > p { display: inline; margin: 0; }
+
+        /* ── Layout texto + imagen (imagen con más protagonismo) ── */
+        .reveal .columnas { align-items: center; }
+        .reveal .columnas .col-txt { flex: 1 1 44%; }
+        .reveal .columnas .col-fig { flex: 1 1 56%; }
+
+        /* ── Figuras como tarjetas (marco blanco + sombra + acento) ── */
+        .reveal .col-fig figure,
+        .reveal .col-fig .quarto-figure {
+          margin: 0 auto !important;
+          background: #ffffff;
+          padding: 10px 10px 0 10px;
+          border: 1px solid var(--unl-gris-linea);
+          border-radius: 12px;
+          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.16);
+          display: inline-block;
+          max-width: 100%;
+        }
+        .reveal .col-fig figure img,
+        .reveal .col-fig img {
+          max-height: 420px;
+          width: auto;
+          max-width: 100%;
+          display: block;
+          margin: 0 auto;
+          border-radius: 6px 6px 0 0 !important;
+          box-shadow: none !important;
+        }
+        .reveal .col-fig figcaption,
+        .reveal .col-fig .figure-caption {
+          font-size: 0.42em;
+          line-height: 1.3;
+          color: var(--unl-gris-oscuro);
+          text-align: center;
+          font-style: italic;
+          border-top: 3px solid var(--unl-rojo);
+          padding: 7px 6px 8px 6px;
+          margin-top: 8px;
+        }
+
+        /* Dos figuras apiladas dentro de una columna */
+        .reveal .col-fig.stack { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+        .reveal .col-fig.stack figure { padding: 7px 7px 0 7px; }
+        .reveal .col-fig.stack figure img,
+        .reveal .col-fig.stack img { max-height: 190px; }
+        .reveal .col-fig.stack figcaption,
+        .reveal .col-fig.stack .figure-caption {
+          font-size: 0.36em;
+          padding: 5px 4px 5px 4px;
+          margin-top: 5px;
+          border-top-width: 2px;
+        }
+
+        /* Imagen a lo ancho (centrada) para slides muy visuales */
+        .reveal .fig-ancha { text-align: center; width: 100%; }
+        .reveal .fig-ancha figure, .reveal .fig-ancha .quarto-figure {
+          margin: 0.2em auto !important;
+          background: #fff;
+          padding: 10px 10px 0 10px;
+          border: 1px solid var(--unl-gris-linea);
+          border-radius: 12px;
+          box-shadow: 0 8px 22px rgba(0,0,0,0.16);
+          display: inline-block;
+        }
+        .reveal .fig-ancha img { max-height: 460px; width: auto; max-width: 100%; border-radius: 6px 6px 0 0 !important; box-shadow: none !important; }
+        .reveal .fig-ancha figcaption, .reveal .fig-ancha .figure-caption {
+          font-size: 0.4em; color: var(--unl-gris-oscuro); text-align: center; font-style: italic;
+          border-top: 3px solid var(--unl-rojo); padding: 6px; margin-top: 6px;
+        }
+
+        /* ══════════════════════════════════════════════════════
+           ANIMACIONES E INTERACTIVIDAD
+           ══════════════════════════════════════════════════════ */
+        @keyframes unlFadeUp   { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+        @keyframes unlFadeLeft { from { opacity: 0; transform: translateX(-26px); } to { opacity: 1; transform: none; } }
+        @keyframes unlZoomIn   { from { opacity: 0; transform: scale(0.90); } to { opacity: 1; transform: none; } }
+        @keyframes unlFade     { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes unlPop      { 0% { opacity: 0; transform: scale(0.6); } 70% { transform: scale(1.06); } 100% { opacity: 1; transform: none; } }
+
+        @media (prefers-reduced-motion: no-preference) {
+          .reveal section.present .concept-card { animation: unlFadeUp 0.5s ease both; }
+          .reveal section.present .concept-card:nth-child(1) { animation-delay: 0.05s; }
+          .reveal section.present .concept-card:nth-child(2) { animation-delay: 0.15s; }
+          .reveal section.present .concept-card:nth-child(3) { animation-delay: 0.25s; }
+          .reveal section.present .concept-card:nth-child(4) { animation-delay: 0.35s; }
+          .reveal section.present .dp-centro { animation: unlPop 0.6s cubic-bezier(0.34,1.3,0.5,1) both; }
+          .reveal section.present .metric-card { animation: unlPop 0.6s cubic-bezier(0.34,1.3,0.5,1) both; }
+          .reveal section.present .metric-card:nth-child(2) { animation-delay: 0.14s; }
+          .reveal section.present .caja-importante,
+          .reveal section.present .caja-info { animation: unlFadeLeft 0.55s ease both; animation-delay: 0.12s; }
+          .reveal section.present .col-fig figure,
+          .reveal section.present .col-fig .quarto-figure,
+          .reveal section.present .fig-ancha figure,
+          .reveal section.present .fig-ancha .quarto-figure { animation: unlZoomIn 0.55s ease both; }
+          .reveal section.present .col-fig.stack figure:nth-of-type(2) { animation-delay: 0.18s; }
+          .reveal section.present table { animation: unlFade 0.7s ease both; animation-delay: 0.1s; }
+          .reveal section.present .numero-seccion { animation: unlZoomIn 0.7s ease both; }
+        }
+
+        .reveal .concept-card,
+        .reveal .dp-caja,
+        .reveal .col-fig figure,
+        .reveal .fig-ancha figure { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .reveal .concept-card:hover,
+        .reveal .dp-caja:hover { transform: translateY(-4px); box-shadow: 0 10px 22px rgba(227, 6, 19, 0.16); }
+        .reveal .col-fig figure:hover,
+        .reveal .fig-ancha figure:hover { transform: translateY(-5px); box-shadow: 0 16px 34px rgba(0, 0, 0, 0.24); }
+        </style>
 ---
 
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 1: PORTADA PRINCIPAL
-     ═══════════════════════════════════════════════════════════ -->
+<!-- ═══════════════ 1 · CARÁTULA ═══════════════ -->
 
-## {.portada data-state="portada" data-menu-title="Portada" data-background-color="#FFFFFF"}
+## {.portada data-state="portada" data-menu-title="Carátula" data-background-color="#FFFFFF"}
 
 ::: {.portada-panel-rojo}
 <img src="assets/logoUNL.png" class="logo-portada" alt="Logo UNL">
-<img src="assets/logoCIS-05.png" class="logo-cis" alt="Logo Carrera de Ingeniería en Sistemas / Computación">
+<img src="assets/logoCIS-05.png" class="logo-cis" alt="Logo Carrera de Ingeniería en Ciencias de la Computación">
 :::
 
 ::: {.portada-panel-blanco}
 <p class="cover-institucion">Universidad Nacional de Loja</p>
-<p class="cover-facultad">Facultad de la Energía, Las Industrias y los Recursos Naturales No Renovables · Carrera de Computación</p>
+<p class="cover-facultad">Facultad de la Energía, las Industrias y los Recursos Naturales No Renovables · Ingeniería en Ciencias de la Computación</p>
 
-<h2 class="cover-titulo">«Título de tu Trabajo de Tesis aquí»</h2>
+<h2 class="cover-titulo">Evaluación del rendimiento de un clúster de bajo costo basado en Raspberry Pi orquestado con Kubernetes</h2>
 
 <div class="cover-linea"></div>
 
 <div class="cover-info">
-<div class="cover-row"><span class="cover-label">Autor</span> «Nombre del Estudiante»</div>
-<div class="cover-row"><span class="cover-label">Director</span> «Nombre del Director de Tesis»</div>
-<div class="cover-row"><span class="cover-label">Loja – Ecuador</span> «Año»</div>
+<div class="cover-row"><span class="cover-label">Autor</span> Diego Oswaldo Márquez Paccha</div>
+<div class="cover-row"><span class="cover-label">Director</span> Ing. Cristian Ramiro Narváez Guillén, Mg. Sc.</div>
+<div class="cover-row"><span class="cover-label">Loja – Ecuador</span> 2026</div>
 </div>
 :::
 
 
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 2: ÍNDICE / CONTENIDO
-     ═══════════════════════════════════════════════════════════ -->
+<!-- ═══════════════ 2 · AGENDA ═══════════════ -->
 
-## Índice {.indice data-menu-title="Índice"}
+## Agenda {.indice data-menu-title="Agenda"}
 
-- Tema de Investigación
-- Introducción
-- Planteamiento del Problema
-- Objetivos (General y Específicos)
-- Metodología
-- Resultados
-- Discusión
-- Conclusiones
-- Recomendaciones
+- Problemática y pregunta de investigación
+- Objetivos
+- Objetivo 1 — Construcción del prototipo físico
+- Objetivo 2 — Evaluación del rendimiento
+- Discusión de resultados
+- Conclusiones y recomendaciones
 
 
-<!-- ═══════════════════════════════════════════════════════════
-     OPCIONAL: SLIDE DE SECCIÓN (fondo rojo, sin cabecera)
-     Descomenta y duplica donde quieras separar bloques.
-     IMPORTANTE: incluye siempre data-state="portada" para
-     ocultar la línea roja, el logo y el pie de página.
+<!-- ═══════════════ 3 · PROBLEMÁTICA + PREGUNTA ═══════════════ -->
 
-## Nombre de la Sección {.seccion data-state="portada"}
+## Problemática y Pregunta {data-menu-title="Problemática"}
 
-<span class="numero-seccion">01</span>
+<div class="diagrama-problema">
 
-     ═══════════════════════════════════════════════════════════ -->
+<div class="dp-caja fragment" data-fragment-index="1">
+<span class="dp-titulo">Contexto</span>
+Depender de la nube comercial y de servidores tradicionales es una <b>barrera de costo</b> para universidades y entornos con pocos recursos.
+</div>
+
+<div class="dp-centro">
+<span class="dp-titulo-centro">Pregunta de investigación</span>
+¿Cuál es el <strong>tiempo de respuesta</strong> y la <strong>cantidad de peticiones por segundo</strong> de un clúster con <strong>Kubernetes</strong> para aplicaciones web, al someterlo a una <strong>carga</strong> en una arquitectura de <strong>bajo costo</strong>?
+</div>
+
+<div class="dp-caja fragment" data-fragment-index="2">
+<span class="dp-titulo">Limitación</span>
+Equipos de poca capacidad, sobre todo en <b>red</b>: en la Raspberry Pi 3 la red pasa por el <b>puerto USB</b>.
+</div>
+
+<div class="dp-caja fragment" data-fragment-index="3">
+<span class="dp-titulo">Alternativa</span>
+Un <b>clúster de Raspberry Pi</b> con una versión ligera de Kubernetes: económico y reproducible.
+</div>
+
+<div class="dp-caja fragment" data-fragment-index="4">
+<span class="dp-titulo">Vacío</span>
+Poca evidencia real de su <b>rendimiento bajo carga</b> y de <b>qué lo limita</b>.
+</div>
+
+</div>
 
 
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 3: TEMA
-     ═══════════════════════════════════════════════════════════ -->
+<!-- ═══════════════ 3 · CONCEPTOS CLAVE ═══════════════ -->
 
-## Tema de Investigación
+## Conceptos clave {data-menu-title="Conceptos clave"}
 
-<!-- EDITAR: Escribe aquí el título completo del tema de tu tesis -->
+::: {.columnas}
+::: {.col-txt}
 
-> «Título completo del trabajo de titulación tal como aparece en el documento aprobado»
+<div class="concept-col">
 
-::: {.caja-info}
-**Línea de investigación:** «Especificar la línea de investigación»
+<div class="concept-card">
+<b>Clúster</b> — varias computadoras que trabajan juntas como si fueran una sola.
+</div>
+
+<div class="concept-card">
+<b>Kubernetes y K3s</b> — coordinan las aplicaciones; K3s es la versión ligera para equipos pequeños.
+</div>
+
+<div class="concept-card">
+<b>Maestro y trabajadores</b> — el maestro coordina; los trabajadores ejecutan las aplicaciones.
+</div>
+
+<div class="concept-card">
+<b>Latencia y throughput</b> — el tiempo de respuesta y las peticiones por segundo: las métricas del estudio.
+</div>
+
+<div class="concept-card">
+<b>Freno por calor</b> — a 80–85 °C el equipo baja la velocidad del procesador para protegerse.
+</div>
+
+</div>
+
+:::
+::: {.col-fig}
+
+![Arquitectura de un clúster con Kubernetes: el maestro coordina y los trabajadores ejecutan](assets/arquitecturaClusterKubernetes.png)
+
+:::
 :::
 
 
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 4: INTRODUCCIÓN
-     ═══════════════════════════════════════════════════════════ -->
+<!-- ═══════════════ 4 · OBJETIVOS ═══════════════ -->
 
-## Introducción
-
-<!-- EDITAR: Breve contexto del trabajo de investigación (3-5 párrafos cortos) -->
-
-- «Contexto general del área de estudio»
-
-- «Relevancia del problema a investigar»
-
-- «Breve mención del enfoque metodológico adoptado»
-
-- «Aporte principal del trabajo»
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 5: PROBLEMÁTICA Y OBJETIVOS
-     ═══════════════════════════════════════════════════════════ -->
-
-## Planteamiento del Problema
-
-<!-- EDITAR: Describe la problemática que aborda tu investigación -->
-
-- «¿Cuál es el problema identificado?»
-
-- «¿A quién afecta y de qué manera?»
-
-- «¿Qué consecuencias genera si no se aborda?»
-
-::: {.caja-importante}
-**Problema central:** «Describir de forma concisa el problema central de la investigación»
-:::
-
----
-
-## Objetivos
+## Objetivos {data-menu-title="Objetivos"}
 
 ### Objetivo General
 
-<!-- EDITAR: Tu objetivo general -->
-
-- «Objetivo general de la investigación»
+::: {.caja-importante}
+Medir el nivel de **latencia** y **throughput** que presenta un clúster orquestado con Kubernetes para el despliegue de aplicaciones web contenerizadas, al someterse a una simulación de carga en una arquitectura de bajo costo.
+:::
 
 ### Objetivos Específicos
 
-<!-- EDITAR: Tus objetivos específicos -->
+::: {.incremental}
 
-1. «Primer objetivo específico»
-2. «Segundo objetivo específico»
-3. «Tercer objetivo específico»
+1. **Construir el prototipo físico** del clúster de bajo costo, abarcando desde el diseño de la topología de red hasta la instalación y configuración base del sistema operativo en los nodos, para garantizar una base estable y funcional al momento de la orquestación con Kubernetes.
 
+2. **Orquestar el despliegue de aplicaciones web** en el clúster mediante Kubernetes, sometiendo el sistema a simulaciones de carga para registrar las métricas de latencia y throughput.
 
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 6: METODOLOGÍA
-     ═══════════════════════════════════════════════════════════ -->
-
-## Metodología
-
-<!-- EDITAR: Describe tu enfoque metodológico -->
-
-### Tipo de Investigación
-
-- «Tipo de investigación (descriptiva, exploratoria, experimental, etc.)»
-- «Enfoque (cualitativo, cuantitativo, mixto)»
-
-### Técnicas e Instrumentos
-
-- «Técnicas de recolección de datos utilizadas»
-- «Instrumentos aplicados (encuestas, entrevistas, observación, etc.)»
-
----
-
-## Metodología — Herramientas
-
-<!-- EDITAR: Tabla con las herramientas usadas. Agrega o quita filas según necesites -->
-
-| Herramienta | Propósito | Versión |
-|-------------|-----------|---------|
-| «Herramienta 1» | «Propósito» | «Versión» |
-| «Herramienta 2» | «Propósito» | «Versión» |
-| «Herramienta 3» | «Propósito» | «Versión» |
-
----
-
-## Metodología — Población y Muestra
-
-<!-- EDITAR: Información sobre población y muestra (si aplica) -->
-
-- **Población:** «Describir la población de estudio»
-- **Muestra:** «Tamaño y tipo de muestreo»
-- **Criterios de inclusión:** «Criterios»
-- **Criterios de exclusión:** «Criterios»
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 7: RESULTADOS
-     ═══════════════════════════════════════════════════════════ -->
-
-## Resultados — Objetivo 1
-
-<!-- EDITAR: Resultados del primer objetivo específico -->
-
-### «Título descriptivo del resultado»
-
-- «Hallazgo principal»
-- «Datos relevantes o métricas»
-
-<!-- TIP: Puedes insertar imágenes de gráficos o tablas así:
-![Descripción del gráfico](ruta/a/tu/grafico.png){width="70%"}
--->
-
----
-
-## Resultados — Objetivo 2
-
-<!-- EDITAR: Resultados del segundo objetivo específico -->
-
-### «Título descriptivo del resultado»
-
-- «Hallazgo principal»
-- «Datos relevantes o métricas»
-
----
-
-## Resultados — Objetivo 3
-
-<!-- EDITAR: Resultados del tercer objetivo específico -->
-
-### «Título descriptivo del resultado»
-
-- «Hallazgo principal»
-- «Datos relevantes o métricas»
-
-
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 8: DISCUSIÓN
-     ═══════════════════════════════════════════════════════════ -->
-
-## Discusión
-
-<!-- EDITAR: Análisis e interpretación de resultados -->
-
-- «¿Cómo se relacionan tus resultados con la literatura existente?»
-
-- «¿Qué hallazgos coinciden o difieren de estudios previos?»
-
-- «¿Cuáles son las implicaciones de tus resultados?»
-
-::: {.caja-info}
-**Comparación clave:** «Contrasta tu resultado más importante con un estudio de referencia»
 :::
 
 
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 9: CONCLUSIONES
-     ═══════════════════════════════════════════════════════════ -->
+<!-- ═══════════════ 5 · SECCIÓN OBJETIVO 1 ═══════════════ -->
 
-## Conclusiones
+## Objetivo 1 — Construcción del prototipo físico {.seccion data-state="portada" data-menu-title="► Objetivo 1"}
 
-<!-- EDITAR: Conclusiones alineadas con los objetivos -->
+<span class="numero-seccion">01</span>
 
-1. «Primera conclusión — vinculada al objetivo específico 1»
 
-2. «Segunda conclusión — vinculada al objetivo específico 2»
+<!-- ─── 6 · METODOLOGÍA OBJ 1 — DISEÑO ─── -->
 
-3. «Tercera conclusión — vinculada al objetivo específico 3»
+## Metodología — Diseño de la carcasa {data-menu-title="Objetivo 1 · Diseño"}
+
+::: {.columnas}
+::: {.col-fig}
+
+![Método Design Thinking: 3 versiones hasta el diseño final](assets/fasesDesignThinking.png)
+
+:::
+::: {.col-fig}
+
+![Diseño en 3D de la carcasa (con enfriamiento y red integrada)](assets/disenoTinkercad.png)
+
+:::
+:::
+
+
+<!-- ─── 7 · METODOLOGÍA OBJ 1 — EQUIPOS Y RED ─── -->
+
+## Metodología — Equipos y red {data-menu-title="Objetivo 1 · Equipos"}
+
+::: {.columnas}
+::: {.col-txt}
+
+- **1 nodo maestro** (Raspberry Pi 4) que coordina
+- **3 trabajadores** (Raspberry Pi 3) que ejecutan
+- Conmutador y enrutador de red
+- **Direcciones de red fijas** para cada nodo
+
+:::
+::: {.col-fig}
+
+![Diagrama de la red del clúster](assets/topologiaRed.png)
+
+:::
+:::
+
+
+<!-- ─── METODOLOGÍA OBJ 1 — PREPARACIÓN Y ORQUESTACIÓN ─── -->
+
+## Metodología — Preparación y orquestación {data-menu-title="Objetivo 1 · Configuración"}
+
+::: {.columnas}
+::: {.col-txt .compacto}
+
+- **Sistema estable:** se **bloquearon las versiones** del núcleo (kernel) y el firmware, y se desactivaron las actualizaciones automáticas → un entorno que no cambia entre pruebas.
+- **Orquestación con K3s:** primero el nodo maestro, luego cada trabajador se une al clúster.
+- **Pantallas por nodo:** un programa en Python muestra en vivo el procesador, la temperatura y la memoria.
+
+<div class="qr-box">
+<img src="assets/qrGithub.png" alt="Código QR del repositorio">
+<span class="qr-txt"><b>Todos los comandos</b><br>Escanea el código o visita:<br><a href="https://github.com/eval-cluster/cluster">github.com/eval-cluster/cluster</a></span>
+</div>
+
+:::
+::: {.col-txt}
+
+``` bash
+# Bloquear versiones del núcleo y firmware
+sudo apt-mark hold linux-image-raspi \
+  linux-headers-raspi linux-raspi linux-firmware
+
+# Instalar K3s en el nodo maestro (sin Traefik)
+curl -sfL https://get.k3s.io | sh -s - --disable traefik
+
+# Unir un trabajador al clúster
+curl -sfL https://get.k3s.io | \
+  K3S_URL=https://192.168.10.10:6443 \
+  K3S_TOKEN=<token> sh -
+```
+
+:::
+:::
+
+
+<!-- ─── 8 · RESULTADOS OBJ 1 — PROTOTIPO ─── -->
+
+## Resultado — Prototipo físico {data-menu-title="Objetivo 1 · Prototipo"}
+
+::: {.columnas}
+::: {.col-txt}
+
+- Carcasa **impresa en 3D**: 4 nodos, ventiladores y conmutador en un solo cuerpo
+- Una **pantalla por nodo** con su estado en vivo
+- **Bajo costo:** ~464 dólares → hasta **87 % de ahorro** frente a la nube
+
+<div class="qr-box">
+<img src="assets/qrDiseno3D.png" alt="Código QR del diseño 3D">
+<span class="qr-txt"><b>Diseño 3D del clúster</b><br>Escanea el código o visita:<br><a href="https://www.tinkercad.com/things/l75tymLzWOO-cluster-4-raspberrypi">tinkercad.com/things/cluster-4-raspberrypi</a></span>
+</div>
+
+:::
+::: {.col-fig .stack}
+
+![Clúster ensamblado](assets/clusterArmado.png)
+
+![Pantallas con el estado de cada nodo](assets/telemetria.png)
+
+:::
+:::
+
+
+<!-- ─── 9 · RESULTADOS OBJ 1 — FUNCIONANDO ─── -->
+
+## Resultado — Clúster funcionando {data-menu-title="Objetivo 1 · Funcionando"}
+
+::: {.columnas}
+::: {.col-txt}
+
+- Los **4 nodos activos** y el servidor web repartido en los trabajadores
+- **Ningún fallo** en las 21 ejecuciones
+
+:::
+::: {.col-fig .stack}
+
+![Los cuatro nodos activos](assets/getNode-O-Wide.png)
+
+![Una copia del servidor web en cada trabajador](assets/getPods-O-Wide.png)
+
+:::
+:::
+
+
+<!-- ═══════════════ 10 · SECCIÓN OBJETIVO 2 ═══════════════ -->
+
+## Objetivo 2 — Evaluación del rendimiento {.seccion data-state="portada" data-menu-title="► Objetivo 2"}
+
+<span class="numero-seccion">02</span>
+
+
+<!-- ─── 11 · METODOLOGÍA OBJ 2 — CÓMO SE MIDIÓ ─── -->
+
+## Metodología — Cómo se midió {data-menu-title="Objetivo 2 · Cómo se midió"}
+
+::: {.columnas}
+::: {.col-txt}
+
+- **Dos escenarios:** con y sin ventiladores. Aplicación de prueba: el servidor web **NGINX**.
+- **Tres niveles de carga:** 50, 200 y 500 usuarios simultáneos (uso normal, intermedio y exigencia máxima).
+- **Monitoreo** del procesador, la red y la temperatura con **Prometheus y Grafana**.
+
+:::
+::: {.col-fig}
+
+![Perfil de las pruebas de carga generadas con Grafana K6](assets/perfilCarga.png)
+
+:::
+:::
+
+
+<!-- ─── 12 · METODOLOGÍA OBJ 2 — CUELLO DE BOTELLA ─── -->
+
+## Metodología — Hallar el cuello de botella {data-menu-title="Objetivo 2 · Cuello de botella"}
+
+::: {.columnas}
+::: {.col-fig}
+
+![Se cambia solo por dónde entran las peticiones](assets/experimentoCuelloBotella.png)
+
+:::
+::: {.col-txt}
+
+Experimento extra: en lugar de enviar todo al maestro, se **reparten** las peticiones entre los trabajadores.
 
 ::: {.caja-importante}
-**Conclusión general:** «Síntesis de la conclusión general de la investigación»
+Si repartir **mejora mucho** → el problema era la concentración en el maestro.
+
+Si **no mejora** → el problema está en la **red de los trabajadores**.
+:::
+
+:::
 :::
 
 
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 10: RECOMENDACIONES
-     ═══════════════════════════════════════════════════════════ -->
+<!-- ─── 13 · RESULTADOS OBJ 2 — RENDIMIENTO ─── -->
 
-## Recomendaciones
+## Resultado — Rendimiento por carga {data-menu-title="Objetivo 2 · Rendimiento"}
 
-<!-- EDITAR: Recomendaciones basadas en los hallazgos -->
+::: {.columnas}
+::: {.col-fig}
 
-1. «Primera recomendación»
+![Throughput (barras) y latencia (línea) según la carga](assets/rendimientoCarga.png)
 
-2. «Segunda recomendación»
+:::
+::: {.col-txt}
 
-3. «Tercera recomendación»
+- El **throughput** crece con la carga: de 40 a **915** peticiones por segundo.
+- La **latencia** se mantiene baja hasta 200 usuarios y **se dispara** a 700 ms en carga alta.
 
-4. «Cuarta recomendación (trabajos futuros)»
+::: {.caja-importante}
+Responde bien hasta 200 usuarios y **se satura en 500** — más lento, pero **sin un solo fallo**.
+:::
+
+:::
+:::
 
 
-<!-- ═══════════════════════════════════════════════════════════
-     SLIDE 11: PORTADA FINAL
-     ═══════════════════════════════════════════════════════════ -->
+<!-- ─── 14 · RESULTADOS OBJ 2 — TEMPERATURA Y ENFRIAMIENTO ─── -->
 
-## {.portada-final data-state="portada" data-menu-title="Cierre" data-background-color="#E30613" data-background-gradient="linear-gradient(135deg, #E30613 0%, #B8050F 60%, #8B0000 100%)"}
+## Resultado — Enfriar casi no mejora {data-menu-title="Objetivo 2 · Enfriamiento"}
+
+::: {.columnas}
+::: {.col-txt}
+
+- Los ventiladores bajaron la temperatura del maestro de **74 °C a 35 °C**.
+- Pero el rendimiento **apenas cambió**: solo **1.6 %** más peticiones por segundo.
+
+::: {.caja-importante}
+La temperatura **no limita** el rendimiento web, porque el procesador **nunca trabaja al límite**.
+:::
+
+:::
+::: {.col-fig}
+
+![Mucho enfriamiento, casi ninguna mejora](assets/efectoEnfriamiento.png)
+
+:::
+:::
+
+
+<!-- ─── 15 · RESULTADOS OBJ 2 — ANÁLISIS INTERNO ─── -->
+
+## Resultado — Qué está pasando por dentro {data-menu-title="Objetivo 2 · Análisis interno"}
+
+::: {.columnas}
+::: {.col-txt}
+
+- El **procesador** quedó casi libre (menos del 28 %)
+- La **red** se usó solo al 8 %
+- Casi todo el tiempo (**99 %**) se va **esperando la respuesta**, no enviando datos
+
+::: {.caja-importante}
+Ni el procesador ni la red están saturados: el problema **no es la potencia, sino la espera**.
+:::
+
+:::
+::: {.col-fig}
+
+![En qué se va el tiempo y cuánto se usan los recursos](assets/analisisInterno.png)
+
+:::
+:::
+
+
+<!-- ─── 16 · RESULTADOS OBJ 2 — CUELLO DE BOTELLA ─── -->
+
+## Resultado — Repartir la carga desde la PC {data-menu-title="Objetivo 2 · Experimento"}
+
+::: {.columnas}
+::: {.col-txt}
+
+- Desde la PC de pruebas se **repartió la carga** directamente entre los 3 trabajadores, en vez de enviarla toda al maestro.
+
+::: {.caja-importante}
+**No era la concentración en el maestro:** el throughput casi no cambió y la respuesta se volvió **más irregular**. Cada trabajador recibe el tráfico por su **propia conexión (puerto USB)**, igual de limitada.
+:::
+
+:::
+::: {.col-fig}
+
+![Centralizado frente a repartido, con carga alta](assets/experimentoDistribuido.png)
+
+:::
+:::
+
+
+<!-- ─── RESULTADO — CUELLO DE BOTELLA (SÍNTESIS) ─── -->
+
+## Resultado — El cuello de botella {data-menu-title="Objetivo 2 · Factor limitante"}
+
+::: {.fig-ancha}
+![Descarte de causas: el límite es la red de los trabajadores](assets/cuelloBotella.png)
+:::
+
+::: {.caja-importante}
+Lo que limita el rendimiento es la **red de los nodos trabajadores**: en la Raspberry Pi 3 la conexión pasa por el **puerto USB**, y eso hace lento el manejo de cada petición.
+:::
+
+
+<!-- ═══════════════ 17 · SECCIÓN DISCUSIÓN ═══════════════ -->
+
+## Discusión {.seccion data-state="portada" data-menu-title="► Discusión"}
+
+<span class="numero-seccion">03</span>
+
+
+<!-- ─── 18 · DISCUSIÓN — COMPARACIÓN ─── -->
+
+## Discusión — Comparación con otros estudios {data-menu-title="Discusión · Comparación"}
+
+::: {.columnas}
+::: {.col-txt}
+
+- **Enfriamiento (Benoit-Cattin y otros):** lograron gran mejora, pero con **inteligencia artificial**, que exige mucho al procesador. Una carga web no lo hace.
+- **Tiempo de respuesta (Sidharta y otros):** con Raspberry Pi 4 y red rápida tuvieron más demora que nosotros → la **configuración** pesa tanto como el equipo.
+- **Costo y fiabilidad:** ~464 dólares (en línea con Shoop y Sankiti) y **ningún fallo**, frente a las fallas de Lakshminarayanan.
+
+:::
+::: {.col-fig}
+
+![Contraste de este trabajo frente a otros estudios](assets/comparacionEstudios.png)
+
+:::
+:::
+
+::: {.caja-importante}
+El **freno por calor solo aparece con tareas que exigen mucho al procesador**. Una carga web no lo hace: por eso enfriar no mejora el rendimiento.
+:::
+
+
+<!-- ─── 19 · DISCUSIÓN — IMPLICACIONES Y LIMITACIONES ─── -->
+
+## Discusión — Qué significa {data-menu-title="Discusión · Implicaciones"}
+
+- Para cargas web, conviene invertir primero en **mejor red**, no en enfriamiento.
+- El enfriamiento igual sirve: **protege los equipos** (más vida útil) y los prepara para **tareas más exigentes** en el futuro.
+- Con esto queda claro **qué mejorar primero** en un clúster de este tipo.
+
+
+<!-- ─── DISCUSIÓN — ALCANCE Y LIMITACIONES ─── -->
+
+## Discusión — Hasta dónde llega este trabajo {data-menu-title="Discusión · Limitaciones"}
+
+- **Repeticiones:** 3 por prueba → tendencias claras y consistentes, pero **no un análisis estadístico formal**.
+- **Un solo tipo de carga:** páginas web sencillas, que no exigen al procesador. Otras cargas (bases de datos, inteligencia artificial, archivos grandes) podrían tener **otro factor limitante** e incluso activar el freno por calor.
+- **Equipos distintos entre sí:** un maestro Raspberry Pi 4 y tres trabajadores Raspberry Pi 3 de dos versiones → refleja un caso real, pero **dificulta aislar cada variable**.
+- **Sin grupo de comparación:** no se probó un clúster con red dedicada; la conclusión sobre la red se apoya en el **descarte de causas y en la literatura**, no en una comparación directa.
+- **Pruebas cortas (5 minutos):** miden el rendimiento estable, pero **no el desgaste** de un uso prolongado (por ejemplo, las tarjetas de memoria).
+
+
+<!-- ═══════════════ 20 · SECCIÓN CONCLUSIONES ═══════════════ -->
+
+## Conclusiones y Recomendaciones {.seccion data-state="portada" data-menu-title="► Conclusiones"}
+
+<span class="numero-seccion">04</span>
+
+
+<!-- ─── 21 · CONCLUSIONES ─── -->
+
+## Respuesta a la pregunta de investigación {data-menu-title="Conclusiones · Respuesta"}
+
+> ¿Cuál es el nivel de **latencia** y **throughput** que presenta un clúster orquestado con Kubernetes para el despliegue de aplicaciones web contenerizadas, al someterse a una simulación de carga en una arquitectura de bajo costo?
+
+<div class="metric-grid">
+<div class="metric-card">
+<div class="m-label">Throughput</div>
+<div class="m-value">≈ 915</div>
+<div class="m-sub">peticiones por segundo, bajo carga alta<br>(40 y 318 en carga baja y media)</div>
+</div>
+<div class="metric-card">
+<div class="m-label">Latencia</div>
+<div class="m-value">≈ 700 ms</div>
+<div class="m-sub">percentil 95 bajo carga alta (437 ms de media)<br>(≈ 3 ms en carga baja y media)</div>
+</div>
+</div>
+
+::: {.caja-importante}
+**Sí, el clúster es viable** para desplegar aplicaciones web de bajo costo: alcanzó ese nivel de **throughput** y **latencia** atendiendo **toda la carga sin un solo fallo**. Su límite está en la **red**, no en el cómputo ni en la temperatura.
+:::
+
+
+<!-- ─── 22 · CONCLUSIONES (objetivos) ─── -->
+
+## Conclusiones — Cumplimiento de los objetivos {data-menu-title="Conclusiones · Objetivos" .compacto}
+
+**Objetivo general — cumplido**
+
+- Se concluye que **quedó medido el nivel de latencia y throughput** del clúster: las 21 ejecuciones fueron **consistentes** y suficientes para responder la pregunta de investigación.
+- El estudio no solo midió el rendimiento, sino que además **determinó el factor que lo condiciona**.
+
+**Objetivo específico 1 — cumplido**
+
+- Se concluye que **el prototipo físico es estable y funcional**: operó **sin un solo fallo** en las 21 ejecuciones, quedando listo para la orquestación.
+- El resultado es además **ampliable y reproducible** (diseño en 3D público).
+
+**Objetivo específico 2 — cumplido**
+
+- Se concluye que **el despliegue web con Kubernetes fue exitoso** y que las métricas de latencia y throughput quedaron **registradas bajo carga**.
+- El análisis permitió, además, **explicar por qué el sistema rinde así** y qué lo limita.
+
+
+<!-- ─── 23 · RECOMENDACIONES TÉCNICAS ─── -->
+
+## Recomendaciones técnicas {data-menu-title="Recomendaciones · Técnicas"}
+
+- **Mejorar la red (lo más importante):** reemplazar los trabajadores por placas con conexión de red propia (Raspberry Pi 4 o superior) y usar un conmutador de red más rápido. Cambiar solo las placas no bastaría, porque la red seguiría limitada.
+- **Mantener los ventiladores:** no por el rendimiento web, sino para proteger los equipos —bajar 10 a 15 °C puede duplicar su vida útil— y dejar el clúster listo para tareas más exigentes.
+- **Almacenamiento:** preferir discos de estado sólido en lugar de tarjetas de memoria, para evitar su desgaste con el uso prolongado.
+
+
+<!-- ─── 24 · RECOMENDACIONES FUTURAS ─── -->
+
+## Recomendaciones para trabajos futuros {data-menu-title="Recomendaciones · Futuras"}
+
+- **Repetir el estudio** con un clúster de placas iguales y red dedicada, para confirmar de forma directa que el límite está en la red.
+- **Probar otros tipos de carga** (bases de datos, inteligencia artificial, archivos grandes) para ver si el factor que limita cambia y si la temperatura pasa a importar.
+- **Hacer más pruebas y más largas**, para permitir un análisis estadístico y observar el desgaste a largo plazo.
+- **Uso educativo:** aprovechar el prototipo en materias de redes, sistemas distribuidos e infraestructura, por su bajo costo.
+
+
+<!-- ═══════════════ 23 · GRACIAS ═══════════════ -->
+
+## {.portada-final data-state="portada" data-menu-title="Gracias" data-background-color="#E30613" data-background-gradient="linear-gradient(135deg, #E30613 0%, #B8050F 60%, #8B0000 100%)"}
 
 <div class="cierre-contenido">
 <h2>Gracias por su atención.</h2>
-<p class="gracias-texto">«Nombre del Estudiante» — Universidad Nacional de Loja</p>
+<p class="gracias-texto">Diego Oswaldo Márquez Paccha — Universidad Nacional de Loja</p>
 </div>
